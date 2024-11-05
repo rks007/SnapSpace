@@ -60,7 +60,7 @@ async function UserInfoCard({user} : {user:User}) {
         {/* Top */}
         <div className=" flex justify-between items-center font-medium">
             <span className="text-gray-500">User Information</span>
-            {currentUserId === user.id ? (<UpdateUser/>) :  (<Link href="/" className="text-blue-500 text-xs" >
+            {currentUserId === user.id ? (<UpdateUser user={user}/>) :  (<Link href="/" className="text-blue-500 text-xs" >
               See all
             </Link>)}
         </div>
