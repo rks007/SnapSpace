@@ -2,9 +2,7 @@
 
 import { auth } from "@clerk/nextjs/server"
 import prisma from "./client";
-import { fileURLToPath } from "url";
 import { z } from "zod";
-import { use } from "react";
 
 //switch follow action
 export const switchFollow = async (userId: string) => {
@@ -162,9 +160,11 @@ export const declineFollowRequest = async (userId: string) => {
     }
 }
 
-//update profile actions
-export const updateProfile = async (formData: FormData, cover: string) => {
 
+//update profile actions
+export const updateProfile = async (prevState:{success:boolean; error:boolean}, payload:{formData: FormData; cover: string}) => {
+
+    const {formData, cover} = payload;
     const fields = Object.fromEntries(formData); //getting all the form data into one element fields
 
     const filteredFields = Object.fromEntries(
@@ -188,13 +188,13 @@ export const updateProfile = async (formData: FormData, cover: string) => {
 
     if(!validatedFields.success){
         console.log(validatedFields.error.flatten().fieldErrors);
-        return "error";
+        return {success:false, error:true};
     }
 
     const {userId} = auth();
 
     if(!userId){
-        return "error";
+        return {success:false, error:true};
     }
 
     try {
@@ -204,9 +204,10 @@ export const updateProfile = async (formData: FormData, cover: string) => {
             },
             data: validatedFields.data
         })
+        return {success:true, error:false}
     } catch (error) {
         console.log(error);
-        
+        return {success:false, error:true};
     }
     
 }
