@@ -2,6 +2,7 @@ import Image from 'next/image'
 import React from 'react'
 import Comments from './Comments'
 import { Post as PostType, User } from '@prisma/client'
+import PostInteraction from './PostInteraction'
 
 type FeedPostType = PostType & {user:User} & {likes:[{userId:string}]} & {_count:{comments:number}}
 
@@ -29,31 +30,7 @@ function Post({post}:{post: FeedPostType}) {
         </div>
 
         {/* interaction like likes and all */}
-        <div className=" flex items-center justify-between text-sm my-4">
-            
-            {/* left side */}
-            <div className="flex gap-2">
-                <div className="flex items-center gap-2 bg-slate-50 p-2 rounded-xl">
-                  <Image src="/like.png" alt='' height={16} width={16} className=' cursor-pointer'/>
-                  <span className='text-gray-300'>|</span>
-                  <span className='text-gray-500'>100 <span className='hidden md:inline'>Likes</span></span>
-                </div>
-                <div className="flex items-center gap-2 bg-slate-50 p-2 rounded-xl">
-                  <Image src="/comment.png" alt='' height={16} width={16} className=' cursor-pointer'/>
-                  <span className='text-gray-300'>|</span>
-                  <span className='text-gray-500'>100 <span className='hidden md:inline'>Comments</span></span>
-                </div>
-            </div>
-            
-            {/* right side */}
-            <div className="">
-                <div className="flex items-center gap-2 bg-slate-50 p-2 rounded-xl">
-                  <Image src="/share.png" alt='' height={16} width={16} className=' cursor-pointer'/>
-                  <span className='text-gray-300'>|</span>
-                  <span className='text-gray-500'><span className='hidden md:inline'>Share</span></span>
-                </div>
-            </div>
-        </div>
+        <PostInteraction postId={post.id} likes={post.likes.map((like) => like.userId)} commentNumber={post._count.comments} />
         <Comments/>
     </div>
   )
