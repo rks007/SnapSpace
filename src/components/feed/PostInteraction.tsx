@@ -52,7 +52,7 @@ function PostInteraction({postId, likes, commentNumber}: {postId: number, likes:
                 <div className="flex items-center gap-2 bg-slate-50 p-2 rounded-xl">
                   <Image src="/comment.png" alt='' height={16} width={16} className=' cursor-pointer'/>
                   <span className='text-gray-300'>|</span>
-                  <span className='text-gray-500'>100 <span className='hidden md:inline'>Comments</span></span>
+                  <span className='text-gray-500'>{commentNumber} <span className='hidden md:inline'>Comments</span></span>
                 </div>
             </div>
             
