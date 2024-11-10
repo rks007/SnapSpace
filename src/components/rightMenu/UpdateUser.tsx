@@ -14,7 +14,7 @@ function UpdateUser({user}:{user: User}) {
 
     const [cover, setCover] = useState<any>(false);
 
-    const [state, formAction] = useActionState(updateProfile, {success:false,error:false}) //useAction State used form better form handling
+    const [state, formAction] = useActionState(updateProfile, {success:false,error:false}) //useAction State used for better form handling
  
     const router = useRouter()
 
