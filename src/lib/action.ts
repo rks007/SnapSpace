@@ -317,3 +317,52 @@ export const addPost = async (formData:FormData, img:string) => {
     }
 
 }
+
+//add story action
+export const addStory = async (img: string) => {
+
+    const {userId} = auth();
+
+    if(!userId){
+        throw new Error("User not authenticated")
+    }
+
+    try {
+
+        const existingStories = await prisma.story.findFirst({
+            where: {
+                userId: userId
+            }
+        })
+
+        if(existingStories){
+            await prisma.story.delete({
+                where: {
+                    id: existingStories.id
+                }
+            })
+        }
+
+        const createdStory = await prisma.story.create({
+            data:{
+                userId: userId,
+                img: img,
+                expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
+            },
+            include: {
+                user: true
+            }
+        })
+
+        return createdStory;
+    } catch (error) {
+        console.log(error);
+        throw new Error("Something went wrong") 
+    }
+}
+
+// delete post action
+
+export const deletePost = async () => {
+    
+}
