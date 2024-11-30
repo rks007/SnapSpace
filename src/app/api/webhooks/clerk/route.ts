@@ -55,20 +55,38 @@ export async function POST(req: Request) {
 //   console.log('Webhook body:', body)
 
   if(eventType === "user.created"){
-      try {
+      // try {
   
-          await prisma.user.create({
-              data: {
-                  id: evt.data.id,
-                  username: JSON.parse(body).data.username,
-                  avatar: JSON.parse(body).data.image_url || "/noAvatar.png",
-                  cover:"/noCover.png"
-              }
-          })
-          return new Response("User has been created", {status: 200})
+      //     await prisma.user.create({
+      //         data: {
+      //             id: evt.data.id,
+      //             username: JSON.parse(body).data.username,
+      //             avatar: JSON.parse(body).data.image_url || "/noAvatar.png",
+      //             cover:"/noCover.png"
+      //         }
+      //     })
+      //     return new Response("User has been created", {status: 200})
+      // } catch (error) {
+      //     console.log(error);
+      //     return new Response("failed to create a new user", {status: 500})
+      // }
+      try {
+        const { id, username, image_url } = JSON.parse(body).data;
+    
+        // Insert into your database using Prisma
+        await prisma.user.create({
+          data: {
+            id, // Clerk User ID
+            username, // User's username
+            avatar: image_url || "/noAvatar.png", // Default avatar if missing
+            cover: "/noCover.png", // Default cover image
+          },
+        });
+    
+        return new Response("User has been created", { status: 200 });
       } catch (error) {
-          console.log(error);
-          return new Response("failed to create a new user", {status: 500})
+        console.error("Error creating user:", error);
+        return new Response("Failed to create a new user", { status: 500 });
       }
   }
 
